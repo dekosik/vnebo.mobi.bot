@@ -102,7 +102,7 @@ namespace vnebo.mobi.bot
             notifyIcon1.Text = $"Бот для мобильной браузерной игры \"Небоскребы\"";
 
             // Проверяем версию
-            // CheckVersion();
+            CheckVersion();
         }
 
         private async void CheckVersion(string url = "https://github.com/dekosik/vnebo.mobi.bot/releases/latest")
