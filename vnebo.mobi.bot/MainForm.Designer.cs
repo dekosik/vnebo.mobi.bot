@@ -397,6 +397,7 @@
             // Version
             // 
             this.Version.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.Version.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Version.Name = "Version";
             this.Version.Size = new System.Drawing.Size(52, 21);
             this.Version.Text = "Version";
@@ -455,7 +456,7 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(162, 22);
             this.toolStripMenuItem3.Text = "Запустить всех";
-            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.ToolStripMenuItem3_Click);
             // 
             // toolStripSeparator1
             // 
@@ -468,7 +469,7 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(162, 22);
             this.toolStripMenuItem4.Text = "Остановить всех";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.ToolStripMenuItem4_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -485,7 +486,7 @@
             this.toolStripMenuItem5.Text = "Автозапуск в фоновом режиме";
             this.toolStripMenuItem5.ToolTipText = "Бот будет автоматически запускаться с Windows в фоновом режиме, а так же автомати" +
     "чески запустит всех ботов.";
-            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.ToolStripMenuItem5_Click);
             // 
             // toolStripMenuItem7
             // 
@@ -504,7 +505,7 @@
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
             this.toolStripMenuItem8.Size = new System.Drawing.Size(209, 22);
             this.toolStripMenuItem8.Text = "Группа ВКонтакте";
-            this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
+            this.toolStripMenuItem8.Click += new System.EventHandler(this.ToolStripMenuItem8_Click);
             // 
             // toolStripMenuItem9
             // 
@@ -512,7 +513,7 @@
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
             this.toolStripMenuItem9.Size = new System.Drawing.Size(209, 22);
             this.toolStripMenuItem9.Text = "Репозиторий на GitHub";
-            this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
+            this.toolStripMenuItem9.Click += new System.EventHandler(this.ToolStripMenuItem9_Click);
             // 
             // toolStripSeparator2
             // 
@@ -529,7 +530,7 @@
             // notifyIcon1
             // 
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            this.notifyIcon1.Click += new System.EventHandler(this.NotifyIcon1_Click);
             // 
             // MainForm
             // 

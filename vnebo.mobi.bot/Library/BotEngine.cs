@@ -40,7 +40,7 @@ namespace vnebo.mobi.bot.Libs
             }
             catch (Exception)
             {
-                return "";
+                return "error";
             }
         }
 
@@ -52,13 +52,15 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task CollectCoins(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Идём на страницу сбора выручки
             string result = await HelpMethod.GET("/floors/0/5", HttpClient);
 
             // Если есть проданный товар
             if (result.Contains("Товар продан!"))
             {
-                HelpMethod.StatusLog("Сбор выручки...", BotID, Form, Resources.st_sold);
+                HelpMethod.StatusLog("Собираем выручку...", BotID, Form, Resources.st_sold);
 
                 // Общая сумма профита и количество этажей на которых собрано
                 int coin = 0, floorCount = 0;
@@ -85,7 +87,7 @@ namespace vnebo.mobi.bot.Libs
                 while (result.Contains("Товар продан!"));
 
                 // Логируем
-                HelpMethod.Log($"Этажей, на которых собрана выручка: {floorCount}.", BotID, Form);
+                HelpMethod.Log($"Этажей, на которых собрана выручка: {floorCount}", BotID, Form);
             }
         }
 
@@ -97,13 +99,15 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task SellGoods(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Идём на страницу доставки товара
             string result = await HelpMethod.GET("/floors/0/3", HttpClient);
 
             // Если есть доставленный товар
             if (result.Contains("Товар доставлен!"))
             {
-                HelpMethod.StatusLog("Выкладываю товар...", BotID, Form, Resources.st_stocked);
+                HelpMethod.StatusLog("Выкладываем товар...", BotID, Form, Resources.st_stocked);
 
                 // Количество этажей
                 int floorCount = 0;
@@ -123,7 +127,7 @@ namespace vnebo.mobi.bot.Libs
                 while (result.Contains("Товар доставлен!"));
 
                 // Логируем
-                HelpMethod.Log($"Этажей, на которых выложен товар: {floorCount}.", BotID, Form);
+                HelpMethod.Log($"Этажей, на которых выложен товар: {floorCount}", BotID, Form);
             }
         }
 
@@ -135,6 +139,8 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task BuyGoods(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Идём на страницу закупки товара
             string result = await HelpMethod.GET("/floors/0/2", HttpClient);
 
@@ -184,7 +190,7 @@ namespace vnebo.mobi.bot.Libs
                 while (result.Contains("Можно закупить товар"));
 
                 // Логируем
-                HelpMethod.Log($"Этажей, на которых закуплен товар: {floorCount}.", BotID, Form);
+                HelpMethod.Log($"Этажей, на которых закуплен товар: {floorCount}", BotID, Form);
             }
         }
 
@@ -196,20 +202,22 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task Lift(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Проверяем лифт
             string result = await HelpMethod.GET("/lift", HttpClient);
 
             // Если есть посетители
             if (result.Contains("Поднять лифт"))
             {
-                HelpMethod.StatusLog("Поднимаем лифт...", BotID, Form, Resources.tb_lift);
-
                 // Количество посетителей, заработано монет, заработано баксов
-                int visitors_count = 0, profit_coin = 0, profit_baks = 0;
+                int visitors_count = 0;
 
                 // Запускаем цикл
                 do
                 {
+                    HelpMethod.StatusLog("Поднимаем лифт...", BotID, Form, Resources.tb_lift);
+
                     // Переменная в которой будет храниться ссылка (поднять лифт или получить чаевые)
                     string url;
 
@@ -228,22 +236,6 @@ namespace vnebo.mobi.bot.Libs
                     {
                         // Парсим ссылку для получения чаевых
                         url = new Regex("../..(.*?)\"><span>Получить").Match(result).Groups[1].Value;
-
-                        // Парсим количество монет и баксов полученных от посетителя
-                        string coin_string = new Regex("<img src=\"/images/icons/st_sold.png\" width=\"16\" height=\"16\" alt=\"o\"/><span>(.*?)</span>").Match(result).Groups[1].Value;
-                        string baks_string = new Regex(@"<img src=""/images/icons/mn_gold\.png"" width=""16"" height=""16"" alt=""\$""/><span>([0-9]?)</span></b>").Match(result).Groups[1].Value;
-
-                        // Если сумма монет не пустая, прибавляем к общему профиту
-                        if (coin_string.Length > 0)
-                        {
-                            profit_coin += Convert.ToInt32(coin_string.Replace("&#039;", ""));
-                        }
-
-                        // Если сумма баксов не пустая, прибавляем к общему профиту
-                        if (baks_string.Length > 0)
-                        {
-                            profit_baks += Convert.ToInt32(baks_string.Replace("&#039;", ""));
-                        }
 
                         // Забираем чаевые
                         result = await HelpMethod.GET($"{url}", HttpClient);
@@ -267,6 +259,8 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task Quests(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Переходим на страницу заданий
             string result = await HelpMethod.GET("/quests", HttpClient);
 
@@ -309,7 +303,7 @@ namespace vnebo.mobi.bot.Libs
                 while (result.Contains("Получить награду"));
 
                 // Логируем
-                HelpMethod.Log($"Забрали ежедневных заданий: {quests_count}.", BotID, Form);
+                HelpMethod.Log($"Забрали ежедневных заданий: {quests_count}", BotID, Form);
             }
         }
 
@@ -374,8 +368,14 @@ namespace vnebo.mobi.bot.Libs
                         // Если важные переменные не пустые
                         if (level.Length > 0 & human_url.Length > 0)
                         {
-                            // Житель меньше 9 уровня и включена опция "Выселять жителей ниже 9 уровня"
-                            if (Convert.ToInt32(level) < 9 & hostel_evict_less_9)
+                            // Если выполняем любое из этих действий, оповещаем через статус
+                            if (Convert.ToInt32(level) < 9 & hostel_evict_less_9 || major.Length > 0 & hostel_evict_minus || amount.Length > 0 & hostel_evict_plus)
+                            {
+                                HelpMethod.StatusLog("Выселяем жителей...", BotID, Form, Resources.man_minus);
+                            }
+
+                            // Житель меньше 9 уровня и включена опция "Выселять жителей ниже 9 уровня" и у жителя нет знака (+)
+                            if (Convert.ToInt32(level) < 9 & hostel_evict_less_9 & amount.Length == 0)
                             {
                                 // Переходим на страницу жителя
                                 result = await HelpMethod.GET(human_url, HttpClient);
@@ -437,7 +437,7 @@ namespace vnebo.mobi.bot.Libs
                     // Если выселенных больше 0
                     if (human_evict_count > 0)
                     {
-                        HelpMethod.Log($"Выселили жителей: {human_evict_count}.", BotID, Form);
+                        HelpMethod.Log($"Выселили жителей: {human_evict_count}", BotID, Form);
                     }
                 }
             }
@@ -451,6 +451,8 @@ namespace vnebo.mobi.bot.Libs
         /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
         public static async Task BusinessTournament(int BotID, HttpClient HttpClient, MainForm Form)
         {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
             // Проверяем бизнес турнир
             string result = await HelpMethod.GET("/inspectors", HttpClient);
 
@@ -458,12 +460,6 @@ namespace vnebo.mobi.bot.Libs
             if (result.Contains("Получить награду"))
             {
                 HelpMethod.StatusLog("Получаем награду за бизнес турнир...", BotID, Form, Resources.chart_pie);
-
-                // Парсим награды
-                string prize_baks = new Regex(@"<img src=""/images/icons/mn_gold\.png"" width=""16"" height=""16"" alt=""\$""/><span>([0-9].?)</span>").Match(result).Groups[1].Value.Replace("&#039;", "");
-                string prize_coin = new Regex(@"<img src=""/images/icons/st_sold\.png"" width=""16"" height=""16"" alt=""o""/><span>(.*?)</span>").Match(result).Groups[1].Value.Replace("&#039;", "");
-                string prize_keys = new Regex(@"<img src=""/images/icons/key\.png"" width=""16"" height=""16"" alt=""k""/><span>(.*?)</span>").Match(result).Groups[1].Value.Replace("&#039;", "");
-                string prize_star = new Regex(@"<img src=""/images/icons/star\.png"" alt=""e"" width=""16"" height=""16""><span>(.*?)</span>").Match(result).Groups[1].Value.Replace("&#039;", "");
 
                 // Парсим ссылку, чтобы забрать награды
                 string prize_link = new Regex("<a class=\"btn60 btng\" href=\"(.*?)\">Получить награду!</a>").Match(result).Groups[1].Value.Replace("&amp;", "&");
@@ -496,7 +492,7 @@ namespace vnebo.mobi.bot.Libs
             // Если ссылка на гостиницу не пустая
             if (hostel_url.Length > 0)
             {
-                HelpMethod.StatusLog("Ищём опытных работников...", BotID, Form, Resources.man_plus);
+                HelpMethod.StatusLog("Ищем опытных работников...", BotID, Form, Resources.man_plus);
 
                 // Идём в гостиницу
                 string result = await HelpMethod.GET(hostel_url, HttpClient);
@@ -513,7 +509,7 @@ namespace vnebo.mobi.bot.Libs
                     // Если у пользователя есть знак (+)
                     if (human.ToString().Contains("(+)"))
                     {
-                        HelpMethod.StatusLog("Нанимаем опытных работников...", BotID, Form, Resources.man_plus);
+                        HelpMethod.StatusLog("Пытаемся нанять опытных работников...", BotID, Form, Resources.man_plus);
 
                         // Парсим ссылку на жителя
                         string human_path = new Regex("(/human/[0-9]*.?/[0-9]*.?/[0-9]*.?/[0-9]*.?)\">").Match(human.ToString()).Groups[1].Value;
@@ -678,7 +674,7 @@ namespace vnebo.mobi.bot.Libs
 
                 if (humans_job_found > 0)
                 {
-                    HelpMethod.Log($"Наняли новых работников: {humans_job_found}.", BotID, Form);
+                    HelpMethod.Log($"Наняли новых работников: {humans_job_found}", BotID, Form);
                 }
             }
         }
@@ -716,7 +712,128 @@ namespace vnebo.mobi.bot.Libs
             while (Result.Contains("Открыть этаж!"));
 
             // Логируем
-            HelpMethod.Log($"Открыли этажей: {floor_open_count}.", BotID, Form);
+            HelpMethod.Log($"Открыли этажей: {floor_open_count}", BotID, Form);
+        }
+
+        /// <summary>
+        /// Метод, который выкупает баксы за монеты.
+        /// </summary>
+        /// <param name="BotID">Идентификатор бота (вкладки).</param>
+        /// <param name="HttpClient">Экземпляр <see cref="HttpClient"/>.</param>
+        /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
+        /// <returns></returns>
+        public static async Task BuyBaksForCoin(int BotID, HttpClient HttpClient, MainForm Form)
+        {
+            HelpMethod.StatusLog("Анализ ситуации...", BotID, Form, Resources.thinking);
+
+            // Переходим в обменник
+            string result = await HelpMethod.GET("/change", HttpClient);
+
+            // Проверяяем возможность обмена
+            if (result.Contains("Выкупить за"))
+            {
+                HelpMethod.StatusLog("Выкупаем баксы за монеты...", BotID, Form, Resources.baks);
+
+                // Парсим ссылку для выкупа
+                string url = new Regex("<a class=\"tdu\" href=\"(.*?)\"><span>Выкупить").Match(result).Groups[1].Value;
+
+                // Проверяем успешность парсинга
+                if (url.Length > 0)
+                {
+                    // Переходим по ссылке
+                    result = await HelpMethod.GET($"/{url}", HttpClient);
+
+                    // Проверяем есть ли подтверждение
+                    if (result.Contains("Подтверждение"))
+                    {
+                        // Парсим ссылку на подверждение
+                        url = new Regex("<a class=\"btng cnfrm\" href=\"(.*?)\">Да").Match(result).Groups[1].Value;
+
+                        // Переходим по ссылки подтверждения
+                        result = await HelpMethod.GET($"/{url}", HttpClient);
+
+                        if (result.Contains("Баксов получено"))
+                        {
+                            HelpMethod.Log("Выкупили все баксы за монеты.", BotID, Form);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Метод, который нанимает в бирже труда жителей со знаком (+).
+        /// </summary>
+        /// <param name="BotID">Идентификатор бота (вкладки).</param>
+        /// <param name="HttpClient">Экземпляр <see cref="HttpClient"/>.</param>
+        /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
+        /// <returns></returns>
+        public static async Task VendorsHumans(int BotID, HttpClient HttpClient, MainForm Form)
+        {
+            // Переходим в биржу труда
+            string result = await HelpMethod.GET("/vendor/humans", HttpClient);
+
+            // Количество нанятых жителей
+            int vendor_humans = 0;
+
+            // Парсим цифру бесплатного количество обновлений
+            string update_count = new Regex("осталось ([0-9]) раз").Match(result).Groups[1].Value;
+
+            // Если есть бесплатные попытки обновлений
+            if (update_count.Length > 0)
+            {
+                HelpMethod.StatusLog("Ищем жителей на бирже труда...", BotID, Form);
+
+                // Запускаем цикл
+                for (int i = 1; i <= Convert.ToInt32(update_count); i++)
+                {
+                    // Проходимся по жителям
+                    foreach (object item in new Regex("<li>.*?</li>", RegexOptions.Singleline).Matches(result))
+                    {
+                        string li_humans = item.ToString();
+
+                        // Если у жителя есть знак (+)
+                        if (li_humans.Contains("(+)"))
+                        {
+                            // Парсим ссылку, чтобы нанять жителя
+                            string url = new Regex(@"\?(.*?)""><span>Нанять").Match(li_humans).Groups[1].Value;
+
+                            // Нанимаем жителя
+                            result = await HelpMethod.GET($"/?{url}", HttpClient);
+
+                            // Подтверждение
+                            if (result.Contains("Подтверждение"))
+                            {
+                                // Парсим ссылку на подтверждение
+                                url = new Regex("href=\"(.*?)\">Да").Match(result).Groups[1].Value;
+
+                                // Переходим
+                                result = await HelpMethod.GET($"/{url}", HttpClient);
+
+                                if (result.Contains("Новый житель"))
+                                {
+                                    // Прибавляем количество нанятных жителей
+                                    vendor_humans++;
+
+                                    // Переходим обратно в биржу труда
+                                    result = await HelpMethod.GET("/vendor/humans", HttpClient);
+                                }
+                            }
+                        }
+                    }
+
+                    // Парсим ссылку кнопки "Обновить"
+                    string update_url = new Regex("href=\"(.*?)\">Обновить").Match(result).Groups[1].Value;
+
+                    // Переходим
+                    result = await HelpMethod.GET($"/{update_url}", HttpClient);
+                }
+
+                if (vendor_humans > 0)
+                {
+                    HelpMethod.Log($"Наняли жителей на бирже труда: {vendor_humans}", BotID, Form);
+                }
+            }
         }
 
         /// <summary>

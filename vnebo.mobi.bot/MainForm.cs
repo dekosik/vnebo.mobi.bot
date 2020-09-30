@@ -29,12 +29,13 @@ namespace vnebo.mobi.bot
         /// <summary>
         /// Максимальное число доступное для создание аккаунтов.
         /// </summary>
-        private int maxAccount = 50;
+        private readonly int maxAccount = 50;
 
         /// <summary>
         /// Версия приложения.
         /// </summary>
-        private string v = "v1.0 (160920)";
+        private readonly string v = "v1.1";
+        private readonly string d = "(300920)";
 
         /// <summary>
         /// Текст кнопки "ЗАПУСТИТЬ БОТА".
@@ -49,7 +50,7 @@ namespace vnebo.mobi.bot
         /// <summary>
         /// Стандартный аватар.
         /// </summary>
-        private static string AVATAR_DEFAULT = "man_no";
+        private static readonly string AVATAR_DEFAULT = "man_no";
 
         /// <summary>
         /// Путь для файла настроек.
@@ -96,39 +97,69 @@ namespace vnebo.mobi.bot
             Text = $"Бот для мобильной браузерной игры \"Небоскребы\"";
 
             // Заголовок в меню "О программе"
-            toolStripMenuItem10.Text = $"Created by DeKoSiK - {v}";
+            toolStripMenuItem10.Text = $"Created by DeKoSiK - {v} {d}";
 
             // Заголовок иконки в трее
             notifyIcon1.Text = $"Бот для мобильной браузерной игры \"Небоскребы\"";
 
-            // Проверяем версию
-            CheckVersion();
+            #if DEBUG
+                // Показываем текущую версию
+                Version.Text = $"{v} {d}";
+            #else
+                // Проверяем актуальность версии
+                CheckVersion();
+            #endif
         }
 
-        private async void CheckVersion(string url = "https://github.com/dekosik/vnebo.mobi.bot/releases/latest")
+        private void CheckVersion(string url = "https://github.com/dekosik/vnebo.mobi.bot/releases/latest")
         {
-            // Выполняем GET запрос
-            string githubResult = await new HttpClient().GetAsync(url).Result.Content.ReadAsStringAsync();
-
-            // Проверяем актуальность версии
-            if (githubResult.Contains($"/tag/{v}"))
+            // Запускаем поток
+            Task.Run(async () =>
             {
-                Version.Text = v;
-                Version.ForeColor = Color.Green;
-                Version.ToolTipText = "Вы используете последнюю версию.";
-            }
-            else
-            {
-                Version.Text = v;
-                Version.ForeColor = Color.Red;
-                Version.ToolTipText = "Ваша версия устарела.\nНажмите чтобы перейти к скачиванию последней версии.";
+                // Показываем текущую версию
+                Version.Text = $"{v} {d}";
 
-                // Ставим обработчик событий на клик
-                Version.Click += (s, e) =>
+                // Выполняем GET запрос
+                string githubResult = await HelpMethod.GET(url, new HttpClient());
+
+                if (githubResult.Length > 0)
                 {
-                    Process.Start(url);
-                };
-            }
+                    // Проверяем актуальность версии
+                    if (githubResult.Contains($"/tag/{v}"))
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Version.ToolTipText = "Вы используете последнюю версию.";
+                            Version.ForeColor = Color.Green;
+                        });
+                    }
+                    else
+                    {
+                        // Парсим ссылку на скачивание
+                        string url_download = new Regex("content=\"/dekosik/vnebo.mobi.bot/releases/tag/(.*?)\"").Match(githubResult).Groups[1].Value;
+
+                        Invoke((MethodInvoker)delegate
+                        {
+                            Version.ToolTipText = url_download.Length > 0 ? $"Ваша версия устарела.\nНажмите чтобы перейти к скачиванию {url_download}." : $"Ваша версия устарела.\nНажмите чтобы перейти к скачиванию последней версии.";
+                            Version.ForeColor = Color.Red;
+                        });
+
+                        // Ставим обработчик событий на клик
+                        Version.Click += (s, e) =>
+                        {
+                            Process.Start(url_download.Length > 0 ? $"https://github.com/dekosik/vnebo.mobi.bot/releases/download/{url_download}/vnebo.mobi.bot.exe" : url);
+                        };
+                    }
+                }
+                else
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        Version.ToolTipText = "Не удалось проверить актуальность версии.";
+                        Version.ForeColor = SystemColors.ControlDark;
+                    });
+                }
+            });
         }
 
         private void CreateTemplate(TabPage tabPage)
@@ -497,7 +528,9 @@ namespace vnebo.mobi.bot
                 ["HOSTEL_EVICT_MINUS"] = settings.ReadString($"USER_{BotID}", "HOSTEL_EVICT_MINUS"),
                 ["HOSTEL_EVICT_PLUS"] = settings.ReadString($"USER_{BotID}", "HOSTEL_EVICT_PLUS"),
                 ["BUSINESS_TOURNAMENT"] = settings.ReadString($"USER_{BotID}", "BUSINESS_TOURNAMENT"),
-                ["HUMAN_JOBS"] = settings.ReadString($"USER_{BotID}", "HUMAN_JOBS")
+                ["HUMAN_JOBS"] = settings.ReadString($"USER_{BotID}", "HUMAN_JOBS"),
+                ["BUY_BAKS_FOR_COIN"] = settings.ReadString($"USER_{BotID}", "BUY_BAKS_FOR_COIN"),
+                ["VENDORS_HUMANS"] = settings.ReadString($"USER_{BotID}", "VENDORS_HUMANS")
             };
         }
 
@@ -551,7 +584,7 @@ namespace vnebo.mobi.bot
                 // Запускаем основной поток
                 Task.Run(async () =>
                 {
-                    HelpMethod.StatusLog("Авторизация...", BotID, this, Resources.man_no);
+                    HelpMethod.StatusLog("Авторизация...", BotID, this, Resources.auth);
 
                     // Авторизация
                     string AuthorizationResult = await BotEngine.Authorization(account_settings["LOGIN"], account_settings["PASSWORD"], httpClient);
@@ -620,13 +653,6 @@ namespace vnebo.mobi.bot
                             }
                         }
 
-                        // Если включена опция "Забирать ежедневные задания"
-                        if (HelpMethod.ToBoolean(account_settings["QUESTS"]))
-                        {
-                            // Задания
-                            await BotEngine.Quests(BotID, httpClient, this);
-                        }
-
                         // Если включена одна из опций [Выселять жителей ниже 9 уровня, Выселять со знаком (-), Выселять со знаком (+)]
                         if (HelpMethod.ToBoolean(account_settings["HOSTEL_EVICT_LESS_9"]) || HelpMethod.ToBoolean(account_settings["HOSTEL_EVICT_MINUS"]) || HelpMethod.ToBoolean(account_settings["HOSTEL_EVICT_PLUS"]))
                         {
@@ -639,6 +665,27 @@ namespace vnebo.mobi.bot
                         {
                             // Проверяем бизнес турнир
                             await BotEngine.BusinessTournament(BotID, httpClient, this);
+                        }
+
+                        // Если включена опция "Забирать ежедневные задания"
+                        if (HelpMethod.ToBoolean(account_settings["QUESTS"]))
+                        {
+                            // Задания
+                            await BotEngine.Quests(BotID, httpClient, this);
+                        }
+
+                        // Если включена опция "Выкупать баксы за монеты"
+                        if (HelpMethod.ToBoolean(account_settings["BUY_BAKS_FOR_COIN"]))
+                        {
+                            // Выкупаем баксы за монеты
+                            await BotEngine.BuyBaksForCoin(BotID, httpClient, this);
+                        }
+
+                        // Если включена опция "Нанимать жителей на бирже труда"
+                        if (HelpMethod.ToBoolean(account_settings["VENDORS_HUMANS"]))
+                        {
+                            // Нанимаем
+                            await BotEngine.VendorsHumans(BotID, httpClient, this);
                         }
 
                         // Обновляем статистику
@@ -659,15 +706,26 @@ namespace vnebo.mobi.bot
                         // Проверяем не остановлен ли бот
                         CheckStop(BotID, button_start, interval_from, interval_do);
                     }
+                    else if (AuthorizationResult == "error")
+                    {
+                        // Ожидание
+                        await BotEngine.Sleep(BotID, button_start, this, 60);
+
+                        // Проверяем не остановлен ли бот
+                        CheckStop(BotID, button_start, interval_from, interval_do);
+                    }
                     else
                     {
                         HelpMethod.Log("Неправильный логин или пароль.", BotID, this, Color.Red);
 
-                        // Ожидание
-                        await BotEngine.Sleep(BotID, button_start, this, 5);
-
-                        // Проверяем не остановлен ли бот
-                        CheckStop(BotID, button_start, interval_from, interval_do);
+                        // Меняем текст кнопки (ЗАПУСТИТЬ БОТА), разблокируем кнопку и интервалы ОТ и ДО
+                        Invoke((MethodInvoker)delegate
+                        {
+                            button_start.Enabled = true;
+                            button_start.Text = BUTTON_TEXT_START;
+                            interval_from.Enabled = true;
+                            interval_do.Enabled = true;
+                        });
                     }
                 });
             }
@@ -742,6 +800,8 @@ namespace vnebo.mobi.bot
                     settings.Write($"USER_{AccountCount}", "HOSTEL_EVICT_PLUS", "false");
                     settings.Write($"USER_{AccountCount}", "BUSINESS_TOURNAMENT", "true");
                     settings.Write($"USER_{AccountCount}", "HUMAN_JOBS", "true");
+                    settings.Write($"USER_{AccountCount}", "BUY_BAKS_FOR_COIN", "false");
+                    settings.Write($"USER_{AccountCount}", "VENDORS_HUMANS", "false");
 
                     // Добавляем вкладку
                     tabControl1.TabPages.Insert(LastIndex, tabPage);
@@ -885,6 +945,9 @@ namespace vnebo.mobi.bot
                         bool hostel_evict_plus = settings.ReadBool(section_name, "HOSTEL_EVICT_PLUS");
                         bool business_tournament = settings.ReadBool(section_name, "BUSINESS_TOURNAMENT");
                         bool human_jobs = settings.ReadBool(section_name, "HUMAN_JOBS");
+                        bool buy_baks_for_coin = settings.ReadBool(section_name, "BUY_BAKS_FOR_COIN");
+                        bool vendors_humans = settings.ReadBool(section_name, "VENDORS_HUMANS");
+
 
                         // Записываем основные настройки профиля во временный файл
                         settings_temp.Write($"USER_{AccountCount + 1}", "LOGIN", login);
@@ -908,6 +971,8 @@ namespace vnebo.mobi.bot
                         settings_temp.Write($"USER_{AccountCount + 1}", "HOSTEL_EVICT_PLUS", hostel_evict_plus.ToString().ToLower());
                         settings_temp.Write($"USER_{AccountCount + 1}", "BUSINESS_TOURNAMENT", business_tournament.ToString().ToLower());
                         settings_temp.Write($"USER_{AccountCount + 1}", "HUMAN_JOBS", human_jobs.ToString().ToLower());
+                        settings_temp.Write($"USER_{AccountCount + 1}", "BUY_BAKS_FOR_COIN", buy_baks_for_coin.ToString().ToLower());
+                        settings_temp.Write($"USER_{AccountCount + 1}", "VENDORS_HUMANS", vendors_humans.ToString().ToLower());
 
                         // Добавляем новую вкладку
                         AddPage(Default: false, Login: login, Avatar: avatar, IntervalFrom: interval_from, IntervalDo: interval_do, StatLevel: stat_level, StatFloor: stat_floor, StatCoin: stat_coin, StatBaks: stat_baks, StatKeys: stat_keys);
@@ -955,7 +1020,7 @@ namespace vnebo.mobi.bot
             AddPage();
         }
 
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             // Запускаем всех ботов
             for (int i = 1; i <= AccountCount; i++)
@@ -969,7 +1034,7 @@ namespace vnebo.mobi.bot
             }
         }
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             // Останавливаем всех ботов
             for (int i = 1; i <= AccountCount; i++)
@@ -983,7 +1048,7 @@ namespace vnebo.mobi.bot
             }
         }
 
-        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem5_Click(object sender, EventArgs e)
         {
             // Меняем Checked
             toolStripMenuItem5.Checked = !toolStripMenuItem5.Checked;
@@ -995,7 +1060,7 @@ namespace vnebo.mobi.bot
             HelpMethod.AutoRun(toolStripMenuItem5.Checked);
         }
 
-        private void notifyIcon1_Click(object sender, EventArgs e)
+        private void NotifyIcon1_Click(object sender, EventArgs e)
         {
             // Если была нажата правая кнопка мыши
             if (((MouseEventArgs)e).Button == MouseButtons.Right)
@@ -1035,12 +1100,12 @@ namespace vnebo.mobi.bot
             Environment.Exit(0);
         }
 
-        private void toolStripMenuItem8_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem8_Click(object sender, EventArgs e)
         {
             Process.Start("https://vk.cc/azGobB");
         }
 
-        private void toolStripMenuItem9_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem9_Click(object sender, EventArgs e)
         {
             Process.Start("https://vk.cc/azGocp");
         }

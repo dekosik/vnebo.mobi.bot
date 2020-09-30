@@ -343,9 +343,59 @@ namespace vnebo.mobi.bot.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap player_santa_f {
+            get {
+                object obj = ResourceManager.GetObject("player_santa_f", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap player_santa_f1 {
+            get {
+                object obj = ResourceManager.GetObject("player_santa_f1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap player_santa_m {
+            get {
+                object obj = ResourceManager.GetObject("player_santa_m", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap player_santa_m1 {
+            get {
+                object obj = ResourceManager.GetObject("player_santa_m1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap quests {
             get {
                 object obj = ResourceManager.GetObject("quests", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sml_happy {
+            get {
+                object obj = ResourceManager.GetObject("sml_happy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -416,6 +466,16 @@ namespace vnebo.mobi.bot.Properties {
         internal static System.Drawing.Bitmap tb_lift {
             get {
                 object obj = ResourceManager.GetObject("tb_lift", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thinking {
+            get {
+                object obj = ResourceManager.GetObject("thinking", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

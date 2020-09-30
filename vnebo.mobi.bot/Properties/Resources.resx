@@ -202,8 +202,23 @@
   <data name="player_m_90o" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\player-m-90o.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="player_santa_f" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player-santa-f.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="player_santa_f1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player-santa-f1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="player_santa_m" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player-santa-m.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="player_santa_m1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player-santa-m1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="quests" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\quests.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sml_happy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sml_happy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="star" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\star.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -225,6 +240,9 @@
   </data>
   <data name="tb_lift" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tb_lift.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thinking" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thinking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="update" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\update.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

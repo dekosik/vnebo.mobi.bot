@@ -30,6 +30,8 @@ namespace vnebo.mobi.bot
             checkBox09.Tag = "HOSTEL_EVICT_LESS_9";
             checkBox10.Tag = "HOSTEL_EVICT_MINUS";
             checkBox11.Tag = "HOSTEL_EVICT_PLUS";
+            checkBox12.Tag = "BUY_BAKS_FOR_COIN";
+            checkBox13.Tag = "VENDORS_HUMANS";
 
             // Прохоидмся по GroupBox
             foreach (GroupBox groupBox in Controls.OfType<GroupBox>())
@@ -60,6 +62,8 @@ namespace vnebo.mobi.bot
             toolTip1.SetToolTip(checkBox09, "Бот будет выселять жителей ниже 9 уровня.");
             toolTip1.SetToolTip(checkBox10, "Бот будет выселять жителей со знаком (-).");
             toolTip1.SetToolTip(checkBox11, "Бот будет выселять жителей со знаком (+).");
+            toolTip1.SetToolTip(checkBox12, "Бот будет выкупать ежедневные баксы за монеты.");
+            toolTip1.SetToolTip(checkBox13, "Бот будет нанимать жителей на бирже труда, пока есть бесплатные попытки.");
         }
     }
 }

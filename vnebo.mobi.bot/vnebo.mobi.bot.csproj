@@ -248,6 +248,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="ScreenHistory\v1.1 %28300920%29.png" />
+    <None Include="Resources\player-santa-f1.png" />
+    <None Include="Resources\player-santa-m1.png" />
+    <None Include="Resources\player-santa-f.png" />
+    <None Include="Resources\player-santa-m.png" />
+    <None Include="Resources\thinking.png" />
+    <None Include="Resources\sml_happy.png" />
     <Content Include="ScreenHistory\v1.0 %28160920%29.png" />
   </ItemGroup>
   <ItemGroup />

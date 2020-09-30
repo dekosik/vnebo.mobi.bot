@@ -139,13 +139,13 @@ namespace vnebo.mobi.bot.Libs
         /// <returns></returns>
         public static string StringNumberFormat(string Number, bool Format_type = true)
         {
-            if(Number.Length > 0)
+            if (Number.Length > 0)
             {
                 // Если нужно укорачивать строку
                 if (Format_type)
                 {
                     // Создаём временные переменные
-                    string number_text = "";
+                    string number_text;
                     double number_double = Convert.ToDouble(Number);
 
                     // Если число меньше 1 000, то просто возвращаем.
