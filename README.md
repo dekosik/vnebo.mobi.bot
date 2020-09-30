@@ -1,7 +1,7 @@
 # vnebo.mobi.bot
 Бот для мобильной браузерной игры "Небоскребы".
 
-![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.0/total?style=social)
+![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.1/total?style=social)
 
 # Описание
 #### ОСНОВНЫЕ ФУНКЦИИ
@@ -26,6 +26,10 @@
 <img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/man_minus.png"> → Может выселять жителей со знаком (-).
 <br>
 <img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/man_plus.png"> → Может выселять жителей со знаком (+).
+<br>
+<img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/baks.png"> → Может выкупать баксы в лифте за монеты.
+<br>
+<img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/sml_happy.png"> → Может нанимать на бирже труда.
 
 #### ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
 → Поддерживает запуск множество аккаунтов.
@@ -41,7 +45,7 @@
 → Отображает мини-иконку персонажа во вкладке рядом с никнеймом.
 
 # Скриншот бота
-![alt скриншот бота](https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/ScreenHistory/v1.0%20(160920).png)
+![alt скриншот бота](https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/ScreenHistory/v1.1%20(300920).png)
 
 # Контакты
 [<img src="https://i.piccy.info/i9/c98a06bc98b6ea5af5ca6b535b5756a6/1600238761/42462/1396465/vnebo_mobi_bot.png" width="400px;">](https://vk.cc/9oWxgt)
