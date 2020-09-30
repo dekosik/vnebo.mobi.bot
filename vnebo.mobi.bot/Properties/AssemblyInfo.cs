@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("Небосребы By DeKoSiK")]
+[assembly: AssemblyTitle("Небоскребы By DeKoSiK")]
 [assembly: AssemblyDescription("Бот для мобильной браузерной игры 'Небоскребы'.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DeKoSiK")]
