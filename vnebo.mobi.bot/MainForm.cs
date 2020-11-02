@@ -34,8 +34,8 @@ namespace vnebo.mobi.bot
         /// <summary>
         /// Версия приложения.
         /// </summary>
-        private readonly string v = "v1.1";
-        private readonly string d = "(300920)";
+        private readonly string v = "v1.2";
+        private readonly string d = "(021120)";
 
         /// <summary>
         /// Текст кнопки "ЗАПУСТИТЬ БОТА".
@@ -603,6 +603,12 @@ namespace vnebo.mobi.bot
 
                         // Заносим в переменную ссылку на гостиницу
                         string hostel_url = $"/floor/{hostel_parse_url.Groups[1].Value}/{hostel_parse_url.Groups[2].Value}";
+
+                        // Если есть осенний марафон
+                        if (result.Contains("Осенний марафон"))
+                        {
+                            await BotEngine.AutumnMarathon(BotID, httpClient, this);
+                        }
 
                         // Обновляем статистику
                         await BotEngine.Statistics(profile_url, BotID, httpClient, this, settings);

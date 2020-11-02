@@ -837,6 +837,39 @@ namespace vnebo.mobi.bot.Libs
         }
 
         /// <summary>
+        /// Метод, который собирает награды в осеннем марафоне.
+        /// </summary>
+        /// <param name="BotID">Идентификатор бота (вкладки).</param>
+        /// <param name="HttpClient">Экземпляр <see cref="HttpClient"/>.</param>
+        /// <param name="Form">Экземпляр <see cref="MainForm"/>.</param>
+        /// <returns></returns>
+        public static async Task AutumnMarathon(int BotID, HttpClient HttpClient, MainForm Form)
+        {
+            // Переменная для хранения ссылки
+            string doneTasksUrl;
+
+            // Запускаем цикл
+            do
+            {
+                // Переходим на страницу осеннего марафона
+                string result = await HelpMethod.GET("/tasks", HttpClient);
+
+                // Парсим выполненные задания
+                doneTasksUrl = new Regex("<a class=\"btng btn60\" href=\"(.*?)\">Получить награду!</a>").Match(result).Groups[1].Value;
+
+                // Если ссылка не пустая
+                if(doneTasksUrl.Length > 0)
+                {
+                    HelpMethod.StatusLog("Получаем награды...", BotID, Form, Resources.leaf_l);
+
+                    // Забираем награду
+                    await HelpMethod.GET($"/{doneTasksUrl}", HttpClient);
+                }
+            }
+            while (doneTasksUrl.Length > 0);
+        }
+
+        /// <summary>
         /// Метод, который обновляет основную статистику и за сессию.
         /// </summary>
         /// <param name="profile_url">Ссылка на профиль.</param>
