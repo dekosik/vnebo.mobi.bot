@@ -1,7 +1,7 @@
 # vnebo.mobi.bot
 Бот для мобильной браузерной игры "Небоскребы".
 
-![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.1/total?style=social)
+![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.2/total?style=social)
 
 # Описание
 #### ОСНОВНЫЕ ФУНКЦИИ
@@ -30,6 +30,8 @@
 <img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/baks.png"> → Может выкупать баксы в лифте за монеты.
 <br>
 <img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/sml_happy.png"> → Может нанимать на бирже труда.
+<br>
+<img src="https://raw.githubusercontent.com/dekosik/vnebo.mobi.bot/master/vnebo.mobi.bot/Resources/leaf-l.png"> → Умеет забирать награды за осенний марафон.
 
 #### ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ
 → Поддерживает запуск множество аккаунтов.
