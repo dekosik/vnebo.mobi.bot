@@ -34,8 +34,8 @@ namespace vnebo.mobi.bot
         /// <summary>
         /// Версия приложения.
         /// </summary>
-        private readonly string v = "v1.2";
-        private readonly string d = "(021120)";
+        private readonly string v = "v1.2.1";
+        private readonly string d = "(221220)";
 
         /// <summary>
         /// Текст кнопки "ЗАПУСТИТЬ БОТА".
@@ -724,14 +724,12 @@ namespace vnebo.mobi.bot
                     {
                         HelpMethod.Log("Неправильный логин или пароль.", BotID, this, Color.Red);
 
-                        // Меняем текст кнопки (ЗАПУСТИТЬ БОТА), разблокируем кнопку и интервалы ОТ и ДО
-                        Invoke((MethodInvoker)delegate
-                        {
-                            button_start.Enabled = true;
-                            button_start.Text = BUTTON_TEXT_START;
-                            interval_from.Enabled = true;
-                            interval_do.Enabled = true;
-                        });
+                        // Запускаем таймер ожидания
+                        // Иногда бот отваливается с этим, причин не знаю, временно так пофиксить можно
+                        await BotEngine.Sleep(BotID, button_start, this, 60);
+
+                        // Проверяем не остановлен ли бот
+                        CheckStop(BotID, button_start, interval_from, interval_do);
                     }
                 });
             }
