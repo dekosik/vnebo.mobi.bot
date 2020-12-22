@@ -1,7 +1,7 @@
 # vnebo.mobi.bot
 Бот для мобильной браузерной игры "Небоскребы".
 
-![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.2/total?style=social)
+![GitHub Releases (by Release)](https://img.shields.io/github/downloads/dekosik/vnebo.mobi.bot/v1.3/total?style=social)
 
 # Описание
 #### ОСНОВНЫЕ ФУНКЦИИ
